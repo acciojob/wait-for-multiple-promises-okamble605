@@ -26,21 +26,21 @@ document.addEventListener("DOMContentLoaded", () => {
     const endTime = performance.now(); // End timing the total execution
 
     // Remove the loading row
-    output.removeChild(loadingRow);
+    output.innerHTML = "";
 
     let totalTime = 0;
 
     // Add rows for each resolved promise
     results.forEach((result, index) => {
       const row = document.createElement("tr");
-      row.innerHTML = `<td>${result.name}</td><td>${result.time} s</td>`;
+      row.innerHTML = `<td>${result.name}</td><td>${result.time}</td>`;
       output.appendChild(row);
       totalTime += parseFloat(result.time);
     });
 
     // Add the total row
     const totalRow = document.createElement("tr");
-    totalRow.innerHTML = `<td>Total</td><td>${(endTime - startTime) / 1000} s</td>`;
+    totalRow.innerHTML = `<td>Total</td><td>${((endTime - startTime) / 1000).toFixed(3)}</td>`;
     output.appendChild(totalRow);
   });
 });
