@@ -36,37 +36,36 @@
     </table>
 
     <script>
-        function createPromise() {
-            return new Promise(resolve => {
-                const time = Math.random() * 2 + 1; // Random time between 1 and 3 seconds
-                setTimeout(() => resolve(time.toFixed(3)), time * 1000);
-            });
-        }
+        const api = () => {
+  return parseInt(Math.random() * 100);
+};
 
-        const promises = [createPromise(), createPromise(), createPromise()];
+let p = new Promise((resolve, reject) => {
+  setTimeout(() => {
+    const n = api();
+    resolve(n + "A");
+  }, 2000);
+});
+let x = new Promise((res, rej) => {
+  setTimeout(() => {
+    const n = api();
+    rej(n + "B");
+  }, 3000);
+});
+let y = new Promise((res, rej) => {
+  setTimeout(() => {
+    const n = api();
+    res(n + "C");
+  }, 1000);
+});
 
-        Promise.all(promises).then(results => {
-            const totalTime = results.reduce((acc, time) => acc + parseFloat(time), 0).toFixed(3);
-            const tableBody = document.querySelector('tbody');
-            tableBody.innerHTML = `
-                <tr>
-                    <td>Promise 1</td>
-                    <td>${results[0]}</td>
-                </tr>
-                <tr>
-                    <td>Promise 2</td>
-                    <td>${results[1]}</td>
-                </tr>
-                <tr>
-                    <td>Promise 3</td>
-                    <td>${results[2]}</td>
-                </tr>
-                <tr>
-                    <td>Total</td>
-                    <td>${totalTime}</td>
-                </tr>
-            `;
-        });
+let k = Promise.allSettled([p, x, y]);
+
+k.then((data) => {
+  console.log(data);
+}).catch((error) => {
+  console.log("catch", error);
+});
     </script>
 </body>
 </html>
